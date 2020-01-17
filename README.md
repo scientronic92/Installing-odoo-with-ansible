@@ -1,5 +1,5 @@
 # Installing-odoo-with-ansible
-A playbook to install odoo from management server using Ansible.
+A playbook to install odoo from a management server using Ansible.
 
 Steps of implementation on AWS:
 1) create key pair
