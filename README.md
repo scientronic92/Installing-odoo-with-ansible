@@ -15,5 +15,7 @@ Steps of implementation on AWS:
 ansible-playbook main.yml -i inventory
 ```
 Note:please check the directories before doing the installation.
+
 Note: you need to configure nginx manually, currently, we are working on it.
+
 Note: The repo is under development!
