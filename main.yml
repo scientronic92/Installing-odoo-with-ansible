@@ -1,6 +1,13 @@
 ---
 - hosts: all
+  become: yes
+
   tasks:
+    - name: create group odoo
+      group:
+        name: odoo
+        state: present
+
     - name: Add the user 'odoo' with a specific uid and a primary group of 'admin'
       user:
         name: odoo
@@ -8,105 +15,125 @@
         password: P@ssw0rd
         uid: 1040
         group: odoo
-
-      become: yes
-      become_method: su
-      become_user: odoo
-      become_password: P@ssw0rd
-      
+ 
     - name: Upgrade all packages to the latest version
       apt:
         name: "*"
         state: latest
+        force_apt_get: true
 
     - name: Update all packages to the latest version
       apt:
         upgrade: dist
+        force_apt_get: true
 
     - name: Installing the required language packages
       apt: 
         pkg:
-          - language-pack-ar 
-          - language-pack-gnome-ar 
-          - language-pack-ar-base -
-          - language-pack-gnome-ar-base
+        - language-pack-ar 
+        - language-pack-gnome-ar 
+        - language-pack-ar-base
+        - language-pack-gnome-ar-base
+        force_apt_get: true
 
     - name: Installing the required packages
       apt: 
         pkg:
-          - git 
-          - python3-pip 
-          - build-essential 
-          - wget 
-          - python3-dev 
-          - python3-venv 
-          - python3-wheel 
-          - libxslt-dev 
-          - libzip-dev 
-          - libldap2-dev 
-          - libsasl2-dev 
-          - python3-setuptools 
-          - node-less 
-          - software-properties-common 
-          - python-xlrd
-          - python3-babel 
-          - python3-dateutil 
-          - python3-decorator 
-          - python3-docutils 
-          - python3-feedparser 
-          - python3-gevent 
-          - python3-html2text 
-          - python3-jinja2 
-          - python3-libsass 
-          - python3-lxml 
-          - python3-mako 
-          - python3-mock 
-          - python3-ofxparse 
-          - python3-passlib 
-          - python3-pil 
-          - python3-psutil 
-          - python3-psycopg2 
-          - python3-pydot 
-          - python3-pyparsing 
-          - python3-pypdf2
-          - python3-qrcode 
-          - python3-reportlab 
-          - python3-requests 
-          - python3-serial 
-          - python3-suds 
-          - python3-tz 
-          - python3-usb 
-          - python3-vatnumber
-          - python3-vobject 
-          - python3-werkzeug 
-          - python3-xlsxwriter
-          - python3-zeep
-          - python3:any
-          - adduser
-          - lsb-base
-          - python3-chardet
-          - postgresql
+        - git 
+        - python3-pip 
+        - build-essential 
+        - wget 
+        - python3-dev 
+        - python3-venv 
+        - python3-wheel 
+        - libxslt-dev 
+        - libzip-dev 
+        - libldap2-dev 
+        - libsasl2-dev 
+        - python3-setuptools 
+        - node-less 
+        - software-properties-common 
+        - python-xlrd
+        - python3-babel 
+        - python3-dateutil 
+        - python3-decorator 
+        - python3-docutils 
+        - python3-feedparser 
+        - python3-gevent 
+        - python3-html2text 
+        - python3-jinja2 
+        - python3-libsass 
+        - python3-lxml 
+        - python3-mako 
+        - python3-mock 
+        - python3-ofxparse 
+        - python3-passlib 
+        - python3-pil 
+        - python3-psutil 
+        - python3-psycopg2 
+        - python3-pydot 
+        - python3-pyparsing 
+        - python3-pypdf2
+        - python3-qrcode 
+        - python3-reportlab 
+        - python3-requests 
+        - python3-serial 
+        - python3-suds 
+        - python3-tz 
+        - python3-usb 
+        - python3-vatnumber
+        - python3-vobject 
+        - python3-werkzeug 
+        - python3-xlsxwriter
+        - python3-zeep
+        - python3:any
+        - adduser
+        - lsb-base
+        - python3-chardet
+        - postgresql
+        force_apt_get: true
+
+    - name: Install the nodejs
+      apt:
+        name: nodejs
+        state: present
+        force_apt_get: true
+
+    - name: Install npm
+      apt:
+        name: npm
+        state: present
+        force_apt_get: true
 
     - name: Install "rtlcss" node.js package globally.
       npm:
-        name: rtlcss
+        name: "rtlcss"
         global: yes
 
     - name: Copy wkhtmltox file..
       copy:
-        src: /home/user/Desktop/odoo/wkhtmltox_0.12.5-1.bionic_amd64.deb
+        src: /home/omer/Desktop/odoo/wkhtmltox_0.12.5-1.bionic_amd64.deb
         dest: /home/odoo
 
     - name: Installing wkhtmltox
       apt:
         deb: /home/odoo/wkhtmltox_0.12.5-1.bionic_amd64.deb
+        force_apt_get: true
 
+    - name: Create /var/lib/odoo if it does not exist
+      file:
+        path: /var/lib/odoo
+        state: directory
+        mode: '0755'
+        
     - name: Copying odoo file..
       copy:
-        src: /home/user/Desktop/odoo/odoo_13.0+e.latest_all.deb
+        src: /home/omer/Desktop/odoo/odoo_13.0+e.latest_all.deb
         dest: /home/odoo
 
     - name: Installing odoo..
       apt:
         deb: /home/odoo/odoo_13.0+e.latest_all.deb
+        force_apt_get: true
+
 
