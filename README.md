@@ -1,6 +1,10 @@
 # Installing-odoo-with-ansible
 A playbook to install odoo from a management server using Ansible.
 
+versions:
+Ubuntu=18.04
+Odoo=13
+
 Steps of implementation on AWS:
 1) create key pair
 2) create security group
